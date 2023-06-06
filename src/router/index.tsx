@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Chat from "../components/Chat";
 import App from "../App";
+import ImageGenerator from "../components/Image";
 
 const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <Chat />,
+  },
+  {
+    path: "/image",
+    element: <ImageGenerator />,
   },
 ]);
 
