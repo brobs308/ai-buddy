@@ -4,8 +4,6 @@ import {
   Image,
   Input,
   Spinner,
-  Text,
-  Textarea,
   VStack,
 } from "@chakra-ui/react";
 
@@ -44,11 +42,11 @@ function ImageGenerator() {
           onSubmit={formik.handleSubmit}
         >
           <label htmlFor="content">Generate Image....</label>
-          <Textarea
+          <Input
             id="content"
             name="content"
+            type="text"
             autoComplete="off"
-            minH={40}
             onChange={formik.handleChange}
             value={formik.values.content}
           />
@@ -60,7 +58,7 @@ function ImageGenerator() {
             disabled={getImage.isLoading}
             type="submit"
           >
-            Submit
+            Generate
           </Button>
         </form>
 
