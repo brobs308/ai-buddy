@@ -16,6 +16,10 @@ const router = createBrowserRouter([
     path: "/image",
     element: <ImageGenerator />,
   },
+  {
+    path: "/brief",
+    element: <h1>Brief</h1>,
+  },
 ]);
 
 export default router;

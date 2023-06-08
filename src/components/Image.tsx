@@ -3,6 +3,7 @@ import {
   Container,
   Image,
   Input,
+  Skeleton,
   Spinner,
   VStack,
 } from "@chakra-ui/react";
@@ -11,6 +12,7 @@ import { useFormik } from "formik";
 import { useMutation } from "react-query";
 import { useState } from "react";
 import { generateImage } from "../apis/image";
+import ImageLoader from "./ImageLoader";
 
 function ImageGenerator() {
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -63,17 +65,18 @@ function ImageGenerator() {
         </form>
 
         {getImage.isLoading ? (
-          <Spinner
-            sx={{
-              alignSelf: "center",
-            }}
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="blue.500"
-            size="xl"
-          />
-        ) : null}
+          <ImageLoader />
+        ) : // <Spinner
+        //   sx={{
+        //     alignSelf: "center",
+        //   }}
+        //   thickness="4px"
+        //   speed="0.65s"
+        //   emptyColor="gray.200"
+        //   color="blue.500"
+        //   size="xl"
+        // />
+        null}
 
         {getImage.isSuccess ? <Image src={imageUrl} /> : null}
       </VStack>
