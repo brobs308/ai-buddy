@@ -1,12 +1,4 @@
-import {
-  Button,
-  Container,
-  Image,
-  Input,
-  Skeleton,
-  Spinner,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Container, Image, Input, VStack } from "@chakra-ui/react";
 
 import { useFormik } from "formik";
 import { useMutation } from "react-query";
