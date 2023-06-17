@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Chat from "../components/Chat";
 import App from "../App";
 import ImageGenerator from "../components/Image";
+import Builder from "../components/Builder";
+import Analytics from "../components/Analytics";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
   {
     path: "/brief",
     element: <h1>Brief</h1>,
+  },
+  {
+    path: "/play",
+    element: <Builder />,
+  },
+  {
+    path: "analytics",
+    element: <Analytics />,
   },
 ]);
 
