@@ -9,7 +9,7 @@ const DragItem = (
     draggable: true,
   }
 ) => {
-  return <img src="./deadpool.png" />;
+  return <Block title="Hello world" />;
 };
 
 export default DragItem;

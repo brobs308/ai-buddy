@@ -1,27 +1,75 @@
 import React, { useState } from "react";
-import { Stage, Layer, Star, Image } from "react-konva";
+import { Stage, Layer, Star, Image, Rect, Line } from "react-konva";
 import Block from "./Block";
 
 import { Box, HStack, VStack } from "@chakra-ui/react";
 import DragItem from "./Builder/Item";
 import useImage from "use-image";
+import { nanoid } from "nanoid";
+import GetAnchors from "./Builder/Anchor";
 
-const URLImage = ({ image }: any) => {
+const SIZE = 120;
+const points = [0, 0, SIZE, 0, SIZE, SIZE, 0, SIZE, 0, 0];
+
+function Border({ step }: { step: any; id?: string }) {
+  const { x, y } = step;
+  return (
+    <Line
+      x={x}
+      y={y}
+      points={points}
+      stroke="black"
+      strokeWidth={2}
+      perfectDrawEnabled={false}
+      offsetX={10}
+      offsetY={10}
+    />
+  );
+}
+
+const URLImage = ({
+  image,
+  setSelected,
+  updateCoordinates,
+  onDragStart,
+}: {
+  image: any;
+  setSelected?: (id: string) => void;
+  onDragStart: () => void;
+  updateCoordinates: (
+    points: {
+      x: number;
+      y: number;
+    },
+    id: string
+  ) => void;
+}) => {
   const [img] = useImage(image.src);
   return (
     <Image
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={(e) => {
+        updateCoordinates({ x: e.target.x(), y: e.target.y() }, image.id);
+      }}
+      id={image.id}
+      key={image.id}
       image={img}
       x={image.x}
       y={image.y}
-      // I will use offset to set origin to the center of the image
-      offsetX={img ? img.width / 2 : 0}
-      offsetY={img ? img.height / 2 : 0}
+      width={100}
+      height={100}
+      onClick={() => {
+        if (!setSelected) return;
+        setSelected(image.id as string);
+      }}
     />
   );
 };
 
 const Builder = () => {
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedItem, setSelection] = useState<string>("");
   const [items = [], setItems] = useState<any[]>([]); // [ {id: "someId", x: 10, y: 20}
   const stageRef = React.useRef<any>(null);
   const [cordinates, setCordinates] = useState({
@@ -33,10 +81,20 @@ const Builder = () => {
     setIsDragging(true);
   };
 
-  const handleDragEnd = (e: any) => {
+  const updateCoordinates = (points: { x: number; y: number }, id: string) => {
+    const newItems = items.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          ...points,
+        };
+      }
+      return item;
+    });
+    setItems(newItems);
     setIsDragging(false);
-    setCordinates({ x: e.target.x(), y: e.target.y() });
   };
+
   return (
     <HStack>
       <VStack
@@ -67,8 +125,8 @@ const Builder = () => {
             ...items,
             {
               ...stageRef.current.getPointerPosition(),
-              id: "someId",
-              src: "./deadpool.png",
+              id: nanoid(),
+              src: "./talking-icon.svg",
             },
           ]);
         }}
@@ -80,29 +138,33 @@ const Builder = () => {
         >
           <Layer>
             {items.map((item) => (
-              <URLImage image={item} />
+              <>
+                <URLImage
+                  key={item.id}
+                  image={item}
+                  setSelected={setSelection}
+                  updateCoordinates={updateCoordinates}
+                  onDragStart={handleDragStart}
+                />
+
+                {!isDragging ? (
+                  <Border
+                    key={`${item.id}-border`}
+                    step={{
+                      x: item.x,
+                      y: item.y,
+                    }}
+                  />
+                ) : null}
+                {selectedItem === item.id ? (
+                  <GetAnchors
+                    key={`${item.id}-anchors`}
+                    points={{ x: item.x, y: item.y }}
+                    size={180}
+                  />
+                ) : null}
+              </>
             ))}
-            <Star
-              id={"someId"}
-              x={cordinates.x}
-              y={cordinates.y}
-              numPoints={5}
-              innerRadius={20}
-              outerRadius={40}
-              fill="#89b717"
-              opacity={0.8}
-              draggable
-              rotation={Math.random() * 180}
-              shadowColor="black"
-              shadowBlur={10}
-              shadowOpacity={0.6}
-              shadowOffsetX={isDragging ? 10 : 5}
-              shadowOffsetY={isDragging ? 10 : 5}
-              scaleX={isDragging ? 1.2 : 1}
-              scaleY={isDragging ? 1.2 : 1}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-            />
           </Layer>
         </Stage>
       </Box>
