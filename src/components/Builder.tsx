@@ -30,20 +30,38 @@ function Border({ step }: { step: any; id?: string }) {
 const URLImage = ({
   image,
   setSelected,
+  updateCoordinates,
+  onDragStart,
 }: {
   image: any;
-  setSelected?: any;
+  setSelected?: (id: string) => void;
+  onDragStart: () => void;
+  updateCoordinates: (
+    points: {
+      x: number;
+      y: number;
+    },
+    id: string
+  ) => void;
 }) => {
   const [img] = useImage(image.src);
   return (
     <Image
+      draggable
+      onDragStart={onDragStart}
+      onDragEnd={(e) => {
+        updateCoordinates({ x: e.target.x(), y: e.target.y() }, image.id);
+      }}
+      id={image.id}
+      key={image.id}
       image={img}
       x={image.x}
       y={image.y}
       width={100}
       height={100}
       onClick={() => {
-        setSelected(image.id);
+        if (!setSelected) return;
+        setSelected(image.id as string);
       }}
     />
   );
@@ -63,10 +81,20 @@ const Builder = () => {
     setIsDragging(true);
   };
 
-  const handleDragEnd = (e: any) => {
+  const updateCoordinates = (points: { x: number; y: number }, id: string) => {
+    const newItems = items.map((item) => {
+      if (item.id === id) {
+        return {
+          ...item,
+          ...points,
+        };
+      }
+      return item;
+    });
+    setItems(newItems);
     setIsDragging(false);
-    setCordinates({ x: e.target.x(), y: e.target.y() });
   };
+
   return (
     <HStack>
       <VStack
@@ -111,17 +139,29 @@ const Builder = () => {
           <Layer>
             {items.map((item) => (
               <>
-                <URLImage image={item} setSelected={setSelection} />
-
-                <Border
-                  step={{
-                    x: item.x,
-                    y: item.y,
-                  }}
+                <URLImage
+                  key={item.id}
+                  image={item}
+                  setSelected={setSelection}
+                  updateCoordinates={updateCoordinates}
+                  onDragStart={handleDragStart}
                 />
 
+                {!isDragging ? (
+                  <Border
+                    key={`${item.id}-border`}
+                    step={{
+                      x: item.x,
+                      y: item.y,
+                    }}
+                  />
+                ) : null}
                 {selectedItem === item.id ? (
-                  <GetAnchors points={{ x: item.x, y: item.y }} size={180} />
+                  <GetAnchors
+                    key={`${item.id}-anchors`}
+                    points={{ x: item.x, y: item.y }}
+                    size={180}
+                  />
                 ) : null}
               </>
             ))}

@@ -37,7 +37,6 @@ const GetAnchors = (props: {
       y={point.y}
       radius={5}
       fill="black"
-      draggable
       //   dragBoundFunc={() => dragBounds(anchor)}
       perfectDrawEnabled={false}
       //   ref={anchor}
