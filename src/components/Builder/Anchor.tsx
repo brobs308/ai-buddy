@@ -31,7 +31,7 @@ const GetAnchors = (props: {
   points: { x: number; y: number };
   size: number;
 }) => {
-  return getAnchorPoints(props.points, props.size).map((point, index) => (
+  return getAnchorPoints(props.points, props.size).map((point) => (
     <Circle
       x={point.x}
       y={point.y}
