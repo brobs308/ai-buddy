@@ -1,9 +1,10 @@
-import { Box, Image, Text } from "@chakra-ui/react";
+import { Box, Image } from "@chakra-ui/react";
 
 interface IBlockProps {
   title: string;
 }
 const Block = (props: IBlockProps) => {
+  console.log("Block props", props);
   return (
     <Box
       draggable={true}
