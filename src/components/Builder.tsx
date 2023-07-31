@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Stage, Layer, Star, Image, Rect, Line } from "react-konva";
-import Block from "./Block";
+import { Stage, Layer, Image, Line } from "react-konva";
+// import Block from "./Block";
 
 import { Box, HStack, VStack } from "@chakra-ui/react";
 import DragItem from "./Builder/Item";
@@ -72,10 +72,10 @@ const Builder = () => {
   const [selectedItem, setSelection] = useState<string>("");
   const [items = [], setItems] = useState<any[]>([]); // [ {id: "someId", x: 10, y: 20}
   const stageRef = React.useRef<any>(null);
-  const [cordinates, setCordinates] = useState({
-    x: Math.random() * window.innerWidth,
-    y: Math.random() * window.innerHeight,
-  });
+  // const [cordinates, setCordinates] = useState({
+  //   x: Math.random() * window.innerWidth,
+  //   y: Math.random() * window.innerHeight,
+  // });
 
   const handleDragStart = () => {
     setIsDragging(true);

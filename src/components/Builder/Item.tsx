@@ -9,6 +9,7 @@ const DragItem = (
     draggable: true,
   }
 ) => {
+  console.log("DragItem props", props);
   return <Block title="Hello world" />;
 };
 
