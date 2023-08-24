@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Flex,
   Box,
@@ -15,9 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "react-query";
 import { loginAction } from "../apis/auth";
-import { useState } from "react";
 import { useAuthContext } from "../Providers/AuthProvier";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 
 export default function Login() {
   const { setUid, setIsLoggedIn } = useAuthContext();
@@ -33,8 +31,20 @@ export default function Login() {
     },
   });
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      const { email, password } = values;
+      login.mutate({
+        email,
+        password,
+      });
+    },
+  });
+
   return (
     <Flex
       minH={"100vh"}
@@ -53,49 +63,44 @@ export default function Login() {
           p={8}
         >
           <Stack spacing={4}>
-            <FormControl id="email">
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </FormControl>
-            <FormControl id="password">
-              <FormLabel>Password</FormLabel>
-              <Input
-                type="password"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: "column", sm: "row" }}
-                align={"start"}
-                justify={"space-between"}
-              >
-                <Checkbox>Remember me</Checkbox>
-                <Text color={"blue.400"}>Forgot password?</Text>
+            <form onSubmit={formik.handleSubmit}>
+              <FormControl id="email">
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                />
+              </FormControl>
+              <Stack spacing={10}>
+                <Stack
+                  direction={{ base: "column", sm: "row" }}
+                  align={"start"}
+                  justify={"space-between"}
+                >
+                  <Checkbox>Remember me</Checkbox>
+                  <Text color={"blue.400"}>Forgot password?</Text>
+                </Stack>
+                <Button
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                  type="submit"
+                >
+                  Sign in
+                </Button>
               </Stack>
-              <Button
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-                onClick={() => {
-                  login.mutate({
-                    email,
-                    password,
-                  });
-                }}
-              >
-                Sign in
-              </Button>
-            </Stack>
+            </form>
           </Stack>
         </Box>
       </Stack>
