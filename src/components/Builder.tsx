@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { Stage, Layer, Image, Line } from "react-konva";
 // import Block from "./Block";
