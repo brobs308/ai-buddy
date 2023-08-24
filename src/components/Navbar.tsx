@@ -20,9 +20,25 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 
 // const Links = ["Chat", "Image", "Brief", "Play", "Analytics"];
 
-const Links = ["Chat", "Image"];
+const Links: {
+  name: string;
+  path: string;
+}[] = [
+  {
+    name: "Chat",
+    path: "chat",
+  },
+  {
+    name: "Image",
+    path: "image",
+  },
+  {
+    name: "Saver",
+    path: "mediumSaver",
+  },
+];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({ name, path }: { name: string; path: string }) => (
   <Link
     px={2}
     py={1}
@@ -31,9 +47,9 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={`/${(children as string)?.toLowerCase()}`}
+    href={`/${(path as string)?.toLowerCase()}`}
   >
-    {children}
+    {name}
   </Link>
 );
 
@@ -53,8 +69,8 @@ export default function NavBar() {
         <HStack spacing={8} alignItems={"center"}>
           <Box>Logo</Box>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {Links.map((link: string) => (
-              <NavLink key={link}>{link}</NavLink>
+            {Links.map((link: { name: string; path: string }) => (
+              <NavLink key={link.name} name={link.name} path={link.path} />
             ))}
           </HStack>
         </HStack>
@@ -88,7 +104,7 @@ export default function NavBar() {
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spacing={4}>
             {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+              <NavLink key={link.name} name={link.name} path={link.path} />
             ))}
           </Stack>
         </Box>
