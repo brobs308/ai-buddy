@@ -7,6 +7,7 @@ import Analytics from "../components/Analytics";
 import Login from "../components/Login";
 import MediumSaver from "../components/MediumSaver";
 import Protected from "./Private";
+import Signup from "../components/SignUp";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
   },
   {
     path: "/mediumSaver",
