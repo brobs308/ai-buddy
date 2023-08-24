@@ -4,6 +4,9 @@ import App from "../App";
 import ImageGenerator from "../components/Image";
 import Builder from "../components/Builder";
 import Analytics from "../components/Analytics";
+import Login from "../components/Login";
+import MediumSaver from "../components/MediumSaver";
+import Protected from "./Private";
 
 const router = createBrowserRouter([
   {
@@ -18,10 +21,10 @@ const router = createBrowserRouter([
     path: "/image",
     element: <ImageGenerator />,
   },
-  {
-    path: "/brief",
-    element: <h1>Brief</h1>,
-  },
+  // {
+  //   path: "/brief",
+  //   element: <h1>Brief</h1>,
+  // },
   {
     path: "/play",
     element: <Builder />,
@@ -29,6 +32,18 @@ const router = createBrowserRouter([
   {
     path: "analytics",
     element: <Analytics />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/mediumSaver",
+    element: (
+      <Protected>
+        <MediumSaver />
+      </Protected>
+    ),
   },
 ]);
 
